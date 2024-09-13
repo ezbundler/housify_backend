@@ -31,5 +31,21 @@ if(req.user.id !== req.params.id) return next(errorHandler(401,'you can not upda
   
 }
 
-module.exports = {userController,userInfoUpdate};
+const deleteUser = async(req,res,next)=>{
+if(req.user.id !== req.params.id){
+  return next(errorHandler(401,"you are not authorized to delete this account!"))
+}
+try {
+  const deletedUser = await User.findByIdAndDelete(req.params.id);
+  res.clearCookie('access_Token');
+  res.clearCookie('access_token')
+  res.status(200).json('account deleted successfully!')
+  
+} catch (error) {
+  next(error)
+}
+
+}
+
+module.exports = {userController,userInfoUpdate,deleteUser};
 
