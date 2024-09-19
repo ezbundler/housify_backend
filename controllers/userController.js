@@ -1,10 +1,11 @@
 const User = require("../models/userModel");
 const errorHandler = require("../utils/error");
-
+const Listing = require("../models/listingModel")
 const bcryptjs = require('bcryptjs')
 const userController = (req,res) => {
   res.send('hi , inside from the controller !');
 }
+
 const userInfoUpdate =async (req,res,next) => {
 if(req.user.id !== req.params.id) return next(errorHandler(401,'you can not update this user!'))
   try {
@@ -47,5 +48,21 @@ try {
 
 }
 
-module.exports = {userController,userInfoUpdate,deleteUser};
+const getUserListings = async(req,res,next)=>{
+  if(req.user.id === req.params.id){
+try {
+  const listings  = await Listing.find({userRef:req.params.id})
+res.status(201).json(listings);
+} catch (error) {
+  next(error)
+}
+  }
+  else{
+    return next( errorHandler(401, "you can only view your own listings!"));
+  }
+  
+
+}
+
+module.exports = {getUserListings,userController,userInfoUpdate,deleteUser};
 
