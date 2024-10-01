@@ -5,6 +5,8 @@ const userRouter = require('./routes/userRoute.js')
 const authRouter = require('./routes/authRoute.js');
 const listingRouter = require('./routes/listingRoute.js')
 const cookieParser = require('cookie-parser');
+const path  = require('path');
+const __dirname = path.resolve();
 dotenv.config();
 const app =express();
 app.use(express.json());
@@ -28,6 +30,13 @@ mongoose.connect(process.env.MONGO_URI,{
 app.use('/api/user',userRouter)
 app.use('/api/auth',authRouter)
 app.use('/api/listing',listingRouter);
+
+app.use(express.static(path.join(__dirname, '/housify_frontend/dist')))
+
+app.get('*',(req,res)=>{
+    res.sendFile(path.join(__dirname, '/housify_frontend/dist/index.html'))
+})
+
 app.use((err,req,res,next)=>{
     const statusCode = err.statusCode  || 500;
     const message = err.message  || 'Internal Server Error';
