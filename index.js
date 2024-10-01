@@ -6,7 +6,7 @@ const authRouter = require('./routes/authRoute.js');
 const listingRouter = require('./routes/listingRoute.js')
 const cookieParser = require('cookie-parser');
 const path  = require('path');
-const __dirname = path.resolve();
+const __dirName = path.resolve();
 dotenv.config();
 const app =express();
 app.use(express.json());
@@ -31,10 +31,10 @@ app.use('/api/user',userRouter)
 app.use('/api/auth',authRouter)
 app.use('/api/listing',listingRouter);
 
-app.use(express.static(path.join(__dirname, '/housify_frontend/dist')))
+app.use(express.static(path.join(__dirName, '/housify_frontend/dist')))
 
 app.get('*',(req,res)=>{
-    res.sendFile(path.join(__dirname, '/housify_frontend/dist/index.html'))
+    res.sendFile(path.join(__dirName, '/housify_frontend/dist/index.html'))
 })
 
 app.use((err,req,res,next)=>{
