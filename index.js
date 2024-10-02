@@ -18,7 +18,7 @@ app.listen(9000,()=>{
    console.log('server is running on the port 9000') 
 })
 
-
+app.use(express.static(path.join(__dirName, '/housify_frontend/')))
 mongoose.connect(process.env.MONGO_URI,{
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -31,7 +31,7 @@ app.use('/api/user',userRouter)
 app.use('/api/auth',authRouter)
 app.use('/api/listing',listingRouter);
 
-app.use(express.static(path.join(__dirName, '/housify_frontend/dist')))
+
 
 app.get('*',(req,res)=>{
     res.sendFile(path.join(__dirName, '/housify_frontend/dist/index.html'))
